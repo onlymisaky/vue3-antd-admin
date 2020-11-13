@@ -1,4 +1,5 @@
-module.exports = {
+/**@type {import('eslint').Linter.Config} */
+const eslintConfig = {
   root: true,
   env: {
     node: true,
@@ -14,5 +15,13 @@ module.exports = {
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'import/prefer-default-export': 'off',
+    'class-methods-use-this': 'off',
+    'guard-for-in': 'off',
+    'no-unused-expressions': ['error', {'allowShortCircuit': true, 'allowTernary': true}],
+    'no-restricted-syntax': 'off',
+    'prefer-promise-reject-errors': 'off',
   },
 };
+
+module.exports = eslintConfig;
