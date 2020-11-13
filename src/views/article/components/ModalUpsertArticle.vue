@@ -90,31 +90,40 @@ export default defineComponent({
       formRef.value
         .validate()
         .then(() => requestFn(form.value))
-        .then(() => router.push({
-          name: 'Article.detail',
-          params: {
-            articleId: data.value.id,
-          },
-        }))
+        .then(() => {
+          visibleModel.value = false;
+          router.push({
+            name: 'Article.Detail',
+            params: {
+              articleId: data.value.id,
+            },
+            replace: true,
+          });
+        })
         .catch((err) => {
           console.log(err);
         });
     }
 
     watch(
-      () => props.article,
+      () => visibleModel.value,
       () => {
-        form.value = {
-          title: '',
-          content: '',
-        };
-        if (props.article) {
+        if (visibleModel.value) {
           form.value = {
-            id: props.article.id,
-            title: props.article.title,
-            content: props.article.content,
+            title: '',
+            content: '',
           };
+          if (props.article) {
+            form.value = {
+              id: props.article.id,
+              title: props.article.title,
+              content: props.article.content,
+            };
+          }
         }
+      },
+      {
+        immediate: true,
       },
     );
 
