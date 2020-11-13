@@ -4,9 +4,12 @@ const vueConfig = {
     proxy: {
       '/ajax': {
         https: true,
-        target: '',
+        target: 'http://localhost:3000/',
         ws: true,
         changeOrigin: true,
+        pathRewrite: {
+          '^/ajax': '/',
+        },
       },
     },
   },

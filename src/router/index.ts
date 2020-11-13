@@ -1,25 +1,41 @@
-import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
-import Home from '../views/Home.vue';
-
-const routes: Array<RouteRecordRaw> = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home,
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
-  },
-];
+import { createRouter, createWebHashHistory } from 'vue-router';
+import { routeService } from '@/services/Route.service';
+import { constantRoutes } from './routes';
 
 const router = createRouter({
-  history: createWebHashHistory(),
-  routes,
+  history: createWebHashHistory(process.env.BASE_URL),
+  routes: [
+    ...constantRoutes,
+  ],
 });
 
-export default router;
+export function getWhiteRouteList(routeList: RouteConfig[]): string[] {
+  const routes: string[] = [];
+  routeList.forEach((item) => {
+    routes.push(item.name);
+    if (item.children && item.children.length) {
+      routes.concat(getWhiteRouteList(item.children));
+    }
+  });
+  return routes;
+}
+
+const whiteRoutes = getWhiteRouteList(constantRoutes);
+
+router.beforeEach((to, from, next) => {
+  const { name, meta: { title = '' } } = to;
+  if (whiteRoutes.includes(name as string)) {
+    next();
+  } else {
+    routeService.routerSetup(router, to).then((route) => {
+      if (to === route) {
+        next();
+      } else {
+        next(route);
+      }
+    });
+  }
+  document.title = title;
+});
+
+export { router };
