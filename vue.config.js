@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const StyleLintPlugin = require('stylelint-webpack-plugin');
+
 /** @type {import('@vue/cli-service').ProjectOptions} */
 const vueConfig = {
   devServer: {
@@ -12,6 +15,12 @@ const vueConfig = {
         },
       },
     },
+  },
+  chainWebpack(config) {
+    // todo
+    // config
+    //   .plugin('stylelint-webpack-plugin')
+    //   .use(StyleLintPlugin);
   },
 };
 

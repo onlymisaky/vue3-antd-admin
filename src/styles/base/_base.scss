@@ -59,19 +59,22 @@
     padding-left: $distance + px !important;
   }
 }
-.left{
+
+.left {
   float: left;
 }
-.right{
+
+.right {
   float: right;
 }
 
-@each $fsItem in $fonts-list{
-  .fs-#{$fsItem}{
+@each $fsItem in $fonts-list {
+  .fs-#{$fsItem} {
     font-size: $fsItem;
   }
 }
-.clearfix::after{
+
+.clearfix::after {
   content: "";
   display: block;
   clear: both;
