@@ -1,5 +1,6 @@
 <template>
-  <router-view :key="viewKey" />
+  <a-spin>
+  </a-spin>
 </template>
 
 <script lang="ts">
@@ -10,10 +11,9 @@
 import { defineComponent, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { routeService } from '@/services/Route.service';
-import { appService } from '@/services/App.service';
 
 export default defineComponent({
-  name: 'Root',
+  name: 'Index',
   setup() {
     const router = useRouter();
     const route = useRoute();
@@ -26,12 +26,6 @@ export default defineComponent({
         }
       });
     });
-    return {
-      viewKey: appService.viewKey,
-    };
   },
 });
 </script>
-
-<style lang="scss" scoped>
-</style>

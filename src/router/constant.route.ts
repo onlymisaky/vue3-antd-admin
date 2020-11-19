@@ -5,9 +5,9 @@ import Result from '@/views/Result.vue';
 
 const constantRoutes: Array<RouteConfig> = [
   {
-    name: 'Root',
+    name: 'Index',
     path: '',
-    component: () => import('@/views/Root.vue'),
+    component: () => import('@/views/Index.vue'),
     meta: {
       title: '',
     },

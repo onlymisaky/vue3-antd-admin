@@ -158,7 +158,8 @@ export function useTable<P extends Array<any>, T>(
 
   function onChangePageSize(page: number, size: number) {
     pagination.pageSize = size;
-    fetchList(page);
+    pagination.currentPage = 1;
+    fetchList(pagination.currentPage);
   }
 
   function onSelectChange(selectedRowKeys: T[]): void {

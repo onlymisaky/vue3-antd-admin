@@ -12,7 +12,7 @@ export const articleRoute: RouteConfig = {
       name: 'Article.List',
       path: 'list',
       meta: {
-        title: '用户列表',
+        title: '文章列表',
         permissions: ['article:view'],
       },
       component: () => import('@/views/article/ArticleList.vue'),

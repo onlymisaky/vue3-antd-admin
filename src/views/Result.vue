@@ -4,7 +4,7 @@
     :sub-title="subTitle">
     <template #extra>
       <a-button type="primary"
-        @click="$router.push({name: 'Root'})">
+        @click="$router.push({name: 'Index'})">
         回到首页
       </a-button>
     </template>

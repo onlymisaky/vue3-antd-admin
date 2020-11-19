@@ -47,7 +47,7 @@ export default defineComponent({
         return props.selectedKeys;
       },
       set(value) {
-        emit('update:openKeys', value);
+        emit('update:selectedKeys', value);
       },
     });
     return {

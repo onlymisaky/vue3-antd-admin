@@ -1,5 +1,5 @@
 <template>
-  <template v-if="isSubMenu()">
+  <template v-if="isSubMenu">
     <a-sub-menu :key="menuItem.name">
       <template v-slot:title>
         <span>
@@ -28,7 +28,7 @@
  * @author zhushiqi
  */
 
-import { defineComponent, PropType } from 'vue';
+import { computed, defineComponent, PropType } from 'vue';
 import { AppstoreOutlined } from '@ant-design/icons-vue';
 
 export default defineComponent({
@@ -38,8 +38,10 @@ export default defineComponent({
     menuItem: { required: true, type: Object as PropType<Menu> },
   },
   setup(props) {
-    const isSubMenu = () => Array.isArray(props.menuItem.children)
-      && !!props.menuItem.children.length;
+    const isSubMenu = computed(
+      () => Array.isArray(props.menuItem.children)
+        && !!props.menuItem.children.length,
+    );
     return {
       isSubMenu,
     };

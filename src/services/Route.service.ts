@@ -1,13 +1,13 @@
 /**
  * @author zhushiqi
- * @description 路由 菜单 导航 等等
+ * @description 路由
  */
 
 import {
-  computed, ComputedRef, Ref, ref,
+  computed, Ref, ref,
 } from 'vue';
 import { Singleton } from '@/utils/singleton';
-import { RouteLocationNormalized, Router, useRoute } from 'vue-router';
+import { RouteLocationNormalized, Router } from 'vue-router';
 import { cloneDeep } from 'lodash';
 import { asyncRoutes } from '@/router/routes';
 import { userService } from './User.service';
@@ -27,74 +27,6 @@ export class RouteService {
 
   /** 标示，用于判断是否生成路由成功 */
   genRoutesSuccess = false;
-
-  /** 左侧菜单栏，根据路由生成 */
-  menus: ComputedRef<Menu[]> = computed(() => this.genMenus(this.routes.value));
-
-  /** 根据当前路径生成的面包屑导航 */
-  routeBreadcrumb: ComputedRef<Breadcrumb[]> = computed(() => this.getRouteBreadcrumb());
-
-  /** 自定义的面包屑导航 */
-  customBreadcrumb: Ref<Breadcrumb[]> = ref([]);
-
-  /** 实际显示的面包屑导航 */
-  breadcrumb: ComputedRef<Breadcrumb[]> = computed(() => (this.customBreadcrumb.value.length
-    ? this.customBreadcrumb.value
-    : this.routeBreadcrumb.value));
-
-  genMenus(routes: RouteConfig[]) {
-    const visibilityRoutes = this.getVisibilityRoutes(routes);
-    const menus = visibilityRoutes.map((route) => this.route2Menu(route));
-    return menus;
-  }
-
-  getVisibilityRoutes(routes: RouteConfig[]): RouteConfig[] {
-    const visibilityRoutes = [];
-    for (const route of routes) {
-      const { meta: { hiddenMenu }, children } = route;
-      if (!hiddenMenu) {
-        const cloneRoute = cloneDeep(route);
-        if (children && children.length) {
-          cloneRoute.children = this.getVisibilityRoutes(children);
-        }
-        visibilityRoutes.push({ ...cloneRoute });
-      }
-    }
-    return visibilityRoutes;
-  }
-
-  route2Menu(route: RouteConfig): Menu {
-    return {
-      name: route.name,
-      title: route.meta.title,
-      children: route.children && route.children.length
-        ? route.children.map((item) => this.route2Menu(item as RouteConfig))
-        : [],
-    };
-  }
-
-  getRouteBreadcrumb(): Breadcrumb[] {
-    const route = useRoute();
-    const breadcrumb: Breadcrumb[] = [];
-    for (const item of route.matched) {
-      const {
-        name,
-        meta: { title, abstract = false, hiddenMenu = false },
-      } = item;
-      if (!hiddenMenu || hiddenMenu) {
-        if (abstract || name === route.name) {
-          breadcrumb.push({ title });
-        } else {
-          breadcrumb.push({ title, route: item });
-        }
-      }
-    }
-    return breadcrumb;
-  }
-
-  setCustomBreadcrumb(breadcrumb: Breadcrumb[] = []) {
-    this.customBreadcrumb.value = breadcrumb;
-  }
 
   genRoutes(routes: RouteConfig[]) {
     if (this.genRoutesSuccess) {
@@ -172,9 +104,8 @@ export class RouteService {
         }
         return { name: 'Result', params: { status: '404' } };
       })
-      .catch(() => {
-        // window.location.href = window.location.origin;
-        console.log(111);
+      .catch((err) => {
+        console.log('routerSetup', err);
         return Promise.reject();
       });
   }
@@ -182,42 +113,40 @@ export class RouteService {
   findFirstVisitableRoute(parentRoute: RouteConfig[]): RouteConfig {
     const currentRoute = parentRoute;
     for (const item of currentRoute) {
-      if (!item.meta.abstract) {
+      if (!item.meta.abstract && !item.meta.hiddenMenu) {
         return item;
       }
 
-      if (item?.children?.length) {
+      if (item?.children?.length && !item.meta.hiddenMenu) {
         return this.findFirstVisitableRoute(item.children as RouteConfig[]);
       }
     }
     return { name: 'Result', params: { status: '403' } } as unknown as RouteConfig;
   }
 
-  getFirstRoute(params?: { router: Router; parentRouteName: string }) {
+  getFirstRoute(
+    router?: Router,
+    parentRouteName?: string,
+  ) {
     const authRoutes = this.routes.value;
-    let result;
 
     // 如果有传入父路由
-    if (params) {
-      const { router, parentRouteName } = params;
-      const designatedMatchedRoutes = router.resolve({ name: parentRouteName }).matched;
-      const designatedRoute = (designatedMatchedRoutes?.length && designatedMatchedRoutes[
-        designatedMatchedRoutes.length - 1]) as unknown as RouteConfig;
-
-      if (!(designatedRoute?.meta?.abstract === true)) {
-        return designatedRoute;
+    if (router && parentRouteName) {
+      const routes = router.resolve({ name: parentRouteName }).matched;
+      if (routes.length !== 0) {
+        const route = routes[routes.length - 1] as unknown as RouteConfig;
+        if (!route.meta.abstract) {
+          return route;
+        }
+        return this.findFirstVisitableRoute(route.children || []);
       }
-
-      result = (designatedRoute?.children?.length
-        && this.findFirstVisitableRoute(designatedRoute?.children || []));
     }
 
-    // 如果未传入或者传入的路由没找到可访问路由
-    if ((!result || (result as RouteConfig)?.name === 'Result') && authRoutes.length) {
+    if (authRoutes.length) {
       return this.findFirstVisitableRoute(authRoutes);
     }
 
-    return result as RouteConfig;
+    return { name: 'Result', params: { status: '403' } } as unknown as RouteConfig;
   }
 }
 
