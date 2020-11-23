@@ -20,9 +20,9 @@ export class MenuService {
   /** 左侧菜单栏，根据路由生成 */
   menus: ComputedRef<Menu[]> = computed(() => this.genMenus(routeService.routes.value));
 
-  openKeys = ref<string[]>(['Article']);
+  openKeys = ref<string[]>([]);
 
-  selectedKeys = ref<string[]>(['Article']);
+  selectedKeys = ref<string[]>([]);
 
   /** 根据当前路径生成的面包屑导航 */
   routeBreadcrumb: ComputedRef<Breadcrumb[]> = computed(() => this.getRouteBreadcrumb());

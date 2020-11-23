@@ -5,7 +5,6 @@ export const articleRoute: RouteConfig = {
   meta: {
     title: '文章管理',
     abstract: true,
-    permissions: ['article:view'],
   },
   children: [
     {
@@ -27,7 +26,7 @@ export const articleRoute: RouteConfig = {
       },
       meta: {
         title: '文章详情',
-        permissions: ['article:view'],
+        permissions: ['article:edit'],
         hiddenMenu: true,
       },
       component: () => import('@/views/article/ArticleDetail.vue'),

@@ -20,6 +20,9 @@ export default defineComponent({
     onMounted(() => {
       routeService.routerSetup(router, route).then((to) => {
         if (to.name === route.name) {
+          /**
+           * todo 是否有必要在 meta 中添加标记用于识别第一个路由必须需要参数才能跳转？
+           */
           router.push(routeService.getFirstRoute());
         } else {
           router.push(to);

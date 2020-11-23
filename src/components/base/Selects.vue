@@ -1,9 +1,11 @@
 <template>
-  <a-select v-model:value="vModel"
+  <a-select style="min-width:80px"
+    v-model:value="vModel"
     v-bind="attrs"
     v-on="attrs">
     <a-select-option v-for="item in options"
       :key="getKey(item)"
+      :label="getLabel(item)"
       :disabled="isDisabled(item)">
       {{getLabel(item)}}
     </a-select-option>
@@ -45,13 +47,6 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const { vModel } = useProp2VModel(props, 'value', ctx);
-    const attrs = computed(() => ({
-      placeholder: '请选择',
-      allowClear: true,
-      showSearch: true,
-      showArrow: true,
-      ...ctx.attrs,
-    }));
 
     const getKey = computed(() => {
       if (typeof props.optionsProps.key === 'function') {
@@ -79,6 +74,21 @@ export default defineComponent({
       }
       return () => !!props.optionsProps.disabled;
     });
+
+    function filterOption(inputValue: string, option: Obj) {
+      return (option.props.label as string)
+        .toLowerCase()
+        .includes(inputValue.trim());
+    }
+
+    const attrs = computed(() => ({
+      placeholder: '请选择',
+      allowClear: true,
+      showArrow: true,
+      showSearch: true,
+      filterOption,
+      ...ctx.attrs,
+    }));
 
     onBeforeMount(() => {
       // 修复下拉框板顶的值为 '' 不显示 placeholder

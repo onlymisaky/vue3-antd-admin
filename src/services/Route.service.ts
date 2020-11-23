@@ -44,8 +44,12 @@ export class RouteService {
     const authRoutes: RouteConfig[] = [];
     for (const route of routes) {
       const cloneRoute = cloneDeep(route);
-      const permissions = cloneRoute.meta?.permissions || ['*'];
+      let permissions = cloneRoute.meta?.permissions;
       const { children } = cloneRoute;
+      if (!Array.isArray(permissions)) {
+        const flatChildren = this.flatRoutes(children || []);
+        permissions = this.mergePermissions(flatChildren);
+      }
       const accessed = permissionService.hasPermission(permissions);
       if (accessed) {
         if (children?.length) {
@@ -55,6 +59,12 @@ export class RouteService {
       }
     }
     return authRoutes;
+  }
+
+  mergePermissions(routes: RouteConfig[]): string[] {
+    const p = routes.map(({ meta: { permissions = [] } }) => permissions);
+    const flatP = p.flat();
+    return Array.from(new Set(flatP));
   }
 
   flatRoutes(routes: RouteConfig[]): RouteConfig[] {
@@ -110,26 +120,26 @@ export class RouteService {
       });
   }
 
-  findFirstVisitableRoute(parentRoute: RouteConfig[]): RouteConfig {
-    const currentRoute = parentRoute;
-    for (const item of currentRoute) {
-      if (!item.meta.abstract && !item.meta.hiddenMenu) {
-        return item;
+  findFirstRoute(routes: RouteConfig[]): RouteConfig {
+    const routess: RouteConfig[] = [];
+    for (const item of routes) {
+      if (!item.meta.abstract) {
+        routess.push(item);
       }
 
-      if (item?.children?.length && !item.meta.hiddenMenu) {
-        return this.findFirstVisitableRoute(item.children as RouteConfig[]);
+      if (item?.children?.length) {
+        routess.push(this.findFirstRoute(item.children as RouteConfig[]));
       }
     }
-    return { name: 'Result', params: { status: '403' } } as unknown as RouteConfig;
+    return routess.find((item) => !item.meta.hiddenMenu)
+      || routess[0]
+      || { name: 'Result', params: { status: '403' } } as unknown as RouteConfig;
   }
 
   getFirstRoute(
     router?: Router,
     parentRouteName?: string,
   ) {
-    const authRoutes = this.routes.value;
-
     // 如果有传入父路由
     if (router && parentRouteName) {
       const routes = router.resolve({ name: parentRouteName }).matched;
@@ -138,12 +148,15 @@ export class RouteService {
         if (!route.meta.abstract) {
           return route;
         }
-        return this.findFirstVisitableRoute(route.children || []);
+        const firstRoute = this.findFirstRoute(route.children || []);
+        return firstRoute;
       }
     }
 
+    const authRoutes = this.routes.value;
     if (authRoutes.length) {
-      return this.findFirstVisitableRoute(authRoutes);
+      const firstRoute = this.findFirstRoute(authRoutes);
+      return firstRoute;
     }
 
     return { name: 'Result', params: { status: '403' } } as unknown as RouteConfig;
