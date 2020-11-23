@@ -53,11 +53,16 @@
 /**
  * @author zhushiqi
  */
-import { defineComponent, ref } from 'vue';
+import {
+  defineComponent, onMounted, ref, unref, watch,
+} from 'vue';
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons-vue';
 import { userService } from '@/services/User.service';
 // eslint-disable-next-line import/no-cycle
 import { menuService } from '@/services/Menu.service';
+import { useRoute } from 'vue-router';
+// eslint-disable-next-line import/no-cycle
+import { routeService } from '@/services/Route.service';
 import SiderMenu from './SiderMenu.vue';
 
 export default defineComponent({
@@ -69,6 +74,28 @@ export default defineComponent({
   },
   setup() {
     const collapsed = ref(false);
+    const route = useRoute();
+
+    let oldOpenKeys: string[] = [];
+
+    watch(
+      () => collapsed.value,
+      (val) => {
+        if (val) {
+          oldOpenKeys = [...unref(menuService.openKeys.value)];
+          menuService.openKeys.value = [];
+        } else {
+          menuService.openKeys.value = oldOpenKeys;
+        }
+      },
+    );
+
+    onMounted(() => {
+      menuService.selectedKeys.value = [
+        routeService.getFirstRoute().name as string,
+      ];
+      menuService.openKeys.value = [route.matched[0]?.name as string];
+    });
 
     return {
       collapsed,

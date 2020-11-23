@@ -5,8 +5,9 @@ export function useToggleBool(initVal = false) {
   function toggle(val?: boolean) {
     if (typeof val === 'boolean') {
       bool.value = val;
+    } else {
+      bool.value = !bool.value;
     }
-    bool.value = !bool.value;
   }
 
   return {
