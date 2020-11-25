@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AxiosResponse } from 'axios';
 import { RouteRecordRaw, RouteLocationRaw } from 'vue-router';
 import { RuleItem } from 'async-validator';
@@ -46,7 +45,6 @@ declare global {
   type HttpTableResponseP<T = any> = Promise<HttpTableResponse<T>>;
 
   interface RouteMeta {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any;
     title: string;
     hiddenMenu?: boolean; // 在菜单不显示，具有延续性
@@ -57,7 +55,6 @@ declare global {
   type RouteConfig = RouteRecordRaw & {
     name: string;
     path: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     component?: any;
     children?: RouteConfig[];
     meta: RouteMeta;

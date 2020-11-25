@@ -14,7 +14,7 @@
 
 <script lang="ts">
 /**
- * @author majing
+ * @author zhushiqi
  */
 
 import {
@@ -75,6 +75,7 @@ export default defineComponent({
       return () => !!props.optionsProps.disabled;
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     function filterOption(inputValue: string, option: Obj) {
       return (option.props.label as string)
         .toLowerCase()
@@ -86,7 +87,8 @@ export default defineComponent({
       allowClear: true,
       showArrow: true,
       showSearch: true,
-      filterOption,
+      optionFilterProp: 'label',
+      // filterOption,
       ...ctx.attrs,
     }));
 

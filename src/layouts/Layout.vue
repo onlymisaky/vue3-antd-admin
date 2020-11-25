@@ -27,7 +27,7 @@
             </template>
           </a-breadcrumb-item>
         </a-breadcrumb>
-        <div style="margin-left:auto">
+        <div style="margin-left: auto;">
           <a-dropdown>
             <a-avatar :size="46">
               {{userInfo?.nickname}}
@@ -113,8 +113,10 @@ export default defineComponent({
 <style lang="scss" scoped>
 .layout {
   min-height: 100vh;
+
   .sider {
     min-height: 100vh;
+
     .app-name {
       background-color: rgb(2, 29, 60);
       max-height: 64px;
