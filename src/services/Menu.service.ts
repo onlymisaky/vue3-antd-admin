@@ -60,6 +60,7 @@ export class MenuService {
     return {
       name: route.name,
       title: route.meta.title,
+      meta: route.meta,
       children: route.children && route.children.length
         ? route.children.map((item) => this.route2Menu(item as RouteConfig))
         : [],

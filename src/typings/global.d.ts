@@ -49,6 +49,11 @@ declare global {
     title: string;
     hiddenMenu?: boolean; // 在菜单不显示，具有延续性
     abstract?: boolean; // 抽象路由，不能被激活，只能由子路由激活
+    /**
+     * 当只有一个子路由的时候，侧边栏会只显示子路由
+     * 如果想一直在侧边栏显示父路由，则设置该属性为 true
+     */
+    alwaysShow?: boolean;
     permissions?: string[];
   }
 
@@ -63,6 +68,7 @@ declare global {
   interface Menu {
     name: string;
     title: string;
+    meta: RouteMeta;
     children?: Menu[];
   }
 

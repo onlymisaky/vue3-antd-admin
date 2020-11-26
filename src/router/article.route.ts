@@ -5,6 +5,7 @@ export const articleRoute: RouteConfig = {
   meta: {
     title: '文章管理',
     abstract: true,
+    alwaysShow: true,
   },
   children: [
     {
