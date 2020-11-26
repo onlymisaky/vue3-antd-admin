@@ -4,10 +4,12 @@
       collapsible
       class="sider">
       <h1 class="m-y-0 app-name">ADMIN</h1>
-      <SiderMenu :menus="menus"
-        :collapsed="collapsed"
-        v-model:openKeys="openKeys"
-        v-model:selectedKeys="selectedKeys" />
+      <div class="sider-menu-wrapper">
+        <SiderMenu :menus="menus"
+          :collapsed="collapsed"
+          v-model:openKeys="openKeys"
+          v-model:selectedKeys="selectedKeys" />
+      </div>
     </a-layout-sider>
     <a-layout>
       <a-layout-header class="header">
@@ -116,6 +118,12 @@ export default defineComponent({
   .sider {
     min-height: 100vh;
 
+    .sider-menu-wrapper {
+      height: calc(100% - 64px);
+      position: relative;
+      overflow-y: auto;
+    }
+
     .app-name {
       background-color: rgb(2, 29, 60);
       max-height: 64px;
@@ -148,5 +156,12 @@ export default defineComponent({
     margin: 0;
     min-height: 280px;
   }
+}
+</style>
+
+<style lang="scss">
+.sider-menu-wrapper::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
 }
 </style>

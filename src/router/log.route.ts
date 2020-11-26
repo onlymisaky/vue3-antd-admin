@@ -1,6 +1,6 @@
 export const logRoute: RouteConfig = {
   name: 'Log',
-  path: '/Log',
+  path: '/log',
   component: () => import('@/layouts/Layout.vue'),
   meta: {
     title: '操作日志',
