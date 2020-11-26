@@ -3,7 +3,7 @@
     <a-layout-sider v-model:collapsed="collapsed"
       collapsible
       class="sider">
-      <h1 class="m-l-20 m-y-0 app-name">ADMIN</h1>
+      <h1 class="m-y-0 app-name">ADMIN</h1>
       <SiderMenu :menus="menus"
         :collapsed="collapsed"
         v-model:openKeys="openKeys"
@@ -61,8 +61,6 @@ import { userService } from '@/services/User.service';
 // eslint-disable-next-line import/no-cycle
 import { menuService } from '@/services/Menu.service';
 import { useRoute } from 'vue-router';
-// eslint-disable-next-line import/no-cycle
-import { routeService } from '@/services/Route.service';
 import SiderMenu from './SiderMenu.vue';
 
 export default defineComponent({
@@ -91,10 +89,11 @@ export default defineComponent({
     );
 
     onMounted(() => {
-      menuService.selectedKeys.value = [
-        routeService.getFirstRoute().name as string,
-      ];
-      menuService.openKeys.value = [route.matched[0]?.name as string];
+      // todo 应该需要过滤一下的
+      const names = route.matched.map((item) => item.name as string);
+
+      menuService.selectedKeys.value = names;
+      menuService.openKeys.value = names;
     });
 
     return {

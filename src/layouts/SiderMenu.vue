@@ -7,7 +7,8 @@
     class="sider-menu">
     <SiderMenuItem v-for="menu in menus"
       :key="menu.name"
-      :menuItem="menu" />
+      :menuItem="menu"
+      :collapsed="collapsed" />
   </a-menu>
 </template>
 
