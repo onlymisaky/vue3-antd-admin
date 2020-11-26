@@ -29,3 +29,21 @@ export function download(blobParts: BlobPart, fileName = `${Date.now()}.xlsx`) {
   window.URL.revokeObjectURL(elink.href);
   document.body.removeChild(elink);
 }
+
+export function serializedParams(params: Obj<string>): string {
+  if (Object.prototype.toString.call(params) !== '[object Object]') {
+    return '';
+  }
+
+  const parts = [];
+  for (const key in params) {
+    const val = params[key];
+    if ([undefined, null].includes(val as unknown as null)) {
+      parts.push(`${key}=`);
+    } else {
+      parts.push(`${key}=${val}`);
+    }
+  }
+
+  return parts.length ? `?${parts.join('&')}` : '';
+}
