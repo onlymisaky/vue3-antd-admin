@@ -1,4 +1,4 @@
-const StyleLintPlugin = require('stylelint-webpack-plugin');
+const StylelintWebpackPlugin = require('stylelint-webpack-plugin');
 
 /** @type {import('@vue/cli-service').ProjectOptions} */
 const vueConfig = {
@@ -15,11 +15,11 @@ const vueConfig = {
       },
     },
   },
-  // chainWebpack(config) {
-  //   config
-  //     .plugin('stylelint-webpack-plugin')
-  //     .use(StyleLintPlugin);
-  // },
+  chainWebpack(config) {
+    config
+      .plugin('stylelint-webpack-plugin')
+      .use(StylelintWebpackPlugin);
+  },
 };
 
 module.exports = vueConfig;
