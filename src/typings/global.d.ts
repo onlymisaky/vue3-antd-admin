@@ -70,6 +70,7 @@ declare global {
     title: string;
     meta: RouteMeta;
     children?: Menu[];
+    hasParent?: false;
   }
 
   interface Breadcrumb {
