@@ -20,7 +20,7 @@ export class PermissionService {
   articleAdd= computed(() => this.hasPermission(['article:add']));
 
   hasPermission(permissions: string[]) {
-    if (!permissions) return true;
+    if (!permissions || permissions.length === 0) return true;
     const myPermissions = userService.permissions.value;
     return permissions.includes('*')
       ? true
