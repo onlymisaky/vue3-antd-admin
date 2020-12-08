@@ -1,18 +1,21 @@
 const StylelintWebpackPlugin = require('stylelint-webpack-plugin');
 
+const localmode = !!process.env.npm_config_localmode;
+const target = localmode ? 'http://localhost:3000/' : 'https://xxx.xingrengo.com/';
+
 /** @type {import('@vue/cli-service').ProjectOptions} */
 const vueConfig = {
   devServer: {
     proxy: {
       '/ajax': {
-        https: true,
-        target: 'http://localhost:3000/',
+        target,
         ws: true,
         changeOrigin: true,
-        pathRewrite: {
-          '^/ajax': '/',
-        },
       },
+      '/logout': {
+        target,
+        ws: true,
+        changeOrigin: true,
     },
   },
   chainWebpack(config) {

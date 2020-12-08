@@ -7,6 +7,9 @@
         @click="$router.push({name: 'Index'})">
         回到首页
       </a-button>
+      <a-button @click="logout">
+        退出登陆
+      </a-button>
     </template>
   </a-result>
 </template>
@@ -17,6 +20,7 @@
  */
 
 import { defineComponent, PropType } from 'vue';
+import { userService } from '@/services/User.service';
 
 export default defineComponent({
   name: 'Result',
@@ -33,6 +37,11 @@ export default defineComponent({
       type: String,
       default: '',
     },
+  },
+  setup() {
+    return {
+      logout: userService.logout,
+    };
   },
 });
 </script>

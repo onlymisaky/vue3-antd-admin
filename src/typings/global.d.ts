@@ -14,7 +14,7 @@ declare global {
 
   type XingrenEmun = [string, string, number];
 
-  type TableResponse<T = any> = {
+  type  <T = any> = {
     page: number;
     size: number;
     total?: number;
