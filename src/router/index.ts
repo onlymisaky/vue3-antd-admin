@@ -35,7 +35,9 @@ router.beforeEach((to, from, next) => {
       }
     });
   }
-  document.title = title;
+  if (title) {
+    document.title = title;
+  }
 });
 
 export { router };
