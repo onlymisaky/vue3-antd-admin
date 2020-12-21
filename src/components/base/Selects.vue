@@ -52,7 +52,7 @@ export default defineComponent({
       if (typeof props.optionsProps.key === 'function') {
         return props.optionsProps.key;
       }
-      if (typeof props.optionsProps.label === 'string') {
+      if (typeof props.optionsProps.key === 'string') {
         return (item: Obj) => item[props.optionsProps.key as string];
       }
       return (item: Obj) => item;
