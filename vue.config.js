@@ -16,6 +16,7 @@ const vueConfig = {
         target,
         ws: true,
         changeOrigin: true,
+      },
     },
   },
   chainWebpack(config) {
