@@ -13,7 +13,7 @@ type Resp<T> = XingrenResponse<T[] | TableResponse<T>>;
 
 type BuildParams<P extends Array<any>> = (page: number, size: number) => P;
 type ProcessResp<T> = (response: Resp<T>) => Resp<T>;
-type ListGetter<T> = (data: Ref<T[] | TableResponse<T>>) => T[];
+type ListGetter<T, U = T> = (data: Ref<T[] | TableResponse<T>>) => U[];
 type ListSetter<T> = (data: T[]) => void;
 type FnName = 'buildParams' | 'processResp' | 'listGetter' | 'listSetter'
 
