@@ -6,12 +6,15 @@
 import {
   computed, Ref, ref,
 } from 'vue';
+import { GeedStorage } from 'geed-storage';
 import { Singleton } from '@/utils/singleton';
 import { RouteLocationNormalized, Router } from 'vue-router';
 import { cloneDeep } from 'lodash';
 import { asyncRoutes } from '@/router/routes';
 import { userService } from './User.service';
 import { permissionService } from './Permission.service';
+
+const storage = new GeedStorage({ type: 'session' });
 
 @Singleton
 export class RouteService {
@@ -104,6 +107,8 @@ export class RouteService {
         let replace = false;
         let routeLocation = to;
 
+        storage.remove('redirectCount');
+
         // 首次进入，没有 addRoute ，name为空，需要手动解析下
         if (to.name === undefined) {
           routeLocation = router.resolve(to);
@@ -114,8 +119,21 @@ export class RouteService {
         }
         return { name: 'Result', params: { status: '404' } };
       })
-      .catch((err) => {
-        console.log('routerSetup', err);
+      .catch(() => {
+        const redirectCount = Number(storage.get('redirectCount'));
+        if (redirectCount < 7) {
+          storage.set('redirectCount', `${redirectCount + 1}`);
+          window.location.href = window.location.origin;
+        } else {
+          router.push({
+            name: 'Result',
+            params: { status: 'warning' },
+            query: {
+              title: '跳转次数过多',
+              subTitle: '请尝试隐身模式打开',
+            },
+          });
+        }
         return Promise.reject();
       });
   }

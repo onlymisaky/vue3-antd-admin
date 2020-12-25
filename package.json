@@ -16,6 +16,7 @@
     "axios": "^0.21.1",
     "core-decorators": "^0.20.0",
     "core-js": "^3.8.1",
+    "geed-storage": "0.0.3",
     "lodash": "^4.17.20",
     "vue": "^3.0.4",
     "vue-router": "^4.0.1"
