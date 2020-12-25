@@ -10,7 +10,7 @@ import { GeedStorage } from 'geed-storage';
 import { Singleton } from '@/utils/singleton';
 import { RouteLocationNormalized, Router } from 'vue-router';
 import { cloneDeep } from 'lodash';
-import { asyncRoutes } from '@/router/routes';
+import { privateRoutes, commonRoutes } from '@/router/routes';
 import { userService } from './User.service';
 import { permissionService } from './Permission.service';
 
@@ -22,11 +22,18 @@ export class RouteService {
 
   static getInstance: () => RouteService;
 
-  /** 动态路由表 */
+  whiteRouteNames = this.flatRoutes(commonRoutes).map((item) => item.name);
+
+  /** 权限路由表 */
   routes: Ref<RouteConfig[]> = ref([]);
 
   /** 平铺路由表 */
   tileRoutes = computed(() => this.flatRoutes(this.routes.value));
+
+  routeNames = computed(() => [
+    ...this.tileRoutes.value.map((item) => item.name),
+    ...this.whiteRouteNames,
+  ])
 
   /** 标示，用于判断是否生成路由成功 */
   genRoutesSuccess = false;
@@ -91,31 +98,21 @@ export class RouteService {
     router: Router,
     to: RouteLocationNormalized,
   ) {
-    if (this.genRoutesSuccess) {
-      const route = router.hasRoute(to.name as string)
-        ? to
-        : { name: 'Result', params: { status: '404' } };
-      return Promise.resolve(route);
-    }
-    return userService.getUserInfo()
-      .then(() => this.genRoutes(asyncRoutes))
-      .then(() => {
-        const routes = this.routes.value;
-        routes.forEach((route) => {
-          router.addRoute(route);
-        });
-        let replace = false;
-        let routeLocation = to;
+    const promise = this.genRoutesSuccess
+      ? Promise.resolve(this.routes.value)
+      : userService.getUserInfo().then(() => this.genRoutes(privateRoutes));
 
+    return promise
+      .then(() => {
+        const replace = false;
+        const name = to.name as string;
         storage.remove('redirectCount');
 
-        // 首次进入，没有 addRoute ，name为空，需要手动解析下
-        if (to.name === undefined) {
-          routeLocation = router.resolve(to);
-          replace = true;
-        }
-        if (router.hasRoute(routeLocation.name as string)) {
-          return replace ? { ...to, replace } : to;
+        if (router.hasRoute(name)) {
+          if (this.routeNames.value.includes(name)) {
+            return replace ? { ...to, replace } : to;
+          }
+          return { name: 'Result', params: { status: '403' } };
         }
         return { name: 'Result', params: { status: '404' } };
       })
