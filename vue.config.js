@@ -7,6 +7,12 @@ const target = localmode ? 'http://localhost:3000/' : 'https://xxx.xingrengo.com
 const vueConfig = {
   devServer: {
     proxy: {
+      '/mock/1859/ajax': {
+        https: true,
+        target: 'https://yapi.xrxr.xyz',
+        ws: true,
+        changeOrigin: true,
+      },
       '/ajax': {
         target,
         ws: true,
