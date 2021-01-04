@@ -7,7 +7,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "lint-css": "stylelint **/*.{html,vue,css,sass,scss} --fix --cache"
+    "lint-css": "stylelint **/*.{html,vue,css,sass,scss} --fix --cache",
+    "mock": "VUE_APP_MOCK=true VUE_APP_MOCK_BASE_API=/mock/1859/ajax vue-cli-service serve"
   },
   "dependencies": {
     "@ant-design/icons-vue": "^5.1.8",
