@@ -6,6 +6,7 @@
     <a-select-option v-for="item in options"
       :key="getKey(item)"
       :label="getLabel(item)"
+      :title="getLabel(item)"
       :disabled="isDisabled(item)">
       {{getLabel(item)}}
     </a-select-option>

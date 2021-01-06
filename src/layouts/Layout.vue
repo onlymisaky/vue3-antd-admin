@@ -56,7 +56,7 @@
  * @author zhushiqi
  */
 import {
-  defineComponent, onMounted, ref, unref, watch,
+  defineComponent, onMounted, ref, unref, watch, nextTick,
 } from 'vue';
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons-vue';
 import { userService } from '@/services/User.service';
@@ -89,6 +89,19 @@ export default defineComponent({
         }
       },
     );
+
+    /**
+     * 路由变化的时候，更新菜单栏选中状态
+     */
+    watch(() => route.path, () => {
+      if (!route.meta.hiddenMenu) {
+        if (route.name) {
+          nextTick(() => {
+            menuService.selectedKeys.value = [route.name as string];
+          });
+        }
+      }
+    });
 
     onMounted(() => {
       // todo 应该需要过滤一下的
