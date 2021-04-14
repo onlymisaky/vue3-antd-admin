@@ -37,6 +37,7 @@ interface Opt<P extends Array<any>, T> {
    */
   listGetter: ListGetter<T>;
   listSetter: ListSetter<T>;
+  cache?: boolean;
 }
 
 export function useTable<P extends Array<any>, T>(
@@ -47,6 +48,7 @@ export function useTable<P extends Array<any>, T>(
     loading, data, error, requestFn,
   } = useRequest(getList, {
     initData: options?.initData,
+    cache: options?.cache,
   });
 
   const pagination = reactive({
