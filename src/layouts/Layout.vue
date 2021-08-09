@@ -59,10 +59,10 @@ import {
   defineComponent, onMounted, ref, unref, watch, nextTick,
 } from 'vue';
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons-vue';
+import { useRoute } from 'vue-router';
 import { userService } from '@/services/User.service';
 // eslint-disable-next-line import/no-cycle
 import { menuService } from '@/services/Menu.service';
-import { useRoute } from 'vue-router';
 import SiderMenu from './SiderMenu.vue';
 
 export default defineComponent({
@@ -78,30 +78,30 @@ export default defineComponent({
 
     let oldOpenKeys: string[] = [];
 
-    watch(
-      () => collapsed.value,
-      (val) => {
-        if (val) {
-          oldOpenKeys = [...unref(menuService.openKeys.value)];
-          menuService.openKeys.value = [];
-        } else {
-          menuService.openKeys.value = oldOpenKeys;
-        }
-      },
-    );
+    watch(collapsed, (val) => {
+      if (val) {
+        oldOpenKeys = [...unref(menuService.openKeys.value)];
+        menuService.openKeys.value = [];
+      } else {
+        menuService.openKeys.value = oldOpenKeys;
+      }
+    });
 
     /**
      * 路由变化的时候，更新菜单栏选中状态
      */
-    watch(() => route.path, () => {
-      if (!route.meta.hiddenMenu) {
-        if (route.name) {
-          nextTick(() => {
-            menuService.selectedKeys.value = [route.name as string];
-          });
+    watch(
+      () => route.path,
+      () => {
+        if (!route.meta.hiddenMenu) {
+          if (route.name) {
+            nextTick(() => {
+              menuService.selectedKeys.value = [route.name as string];
+            });
+          }
         }
-      }
-    });
+      },
+    );
 
     onMounted(() => {
       // todo 应该需要过滤一下的

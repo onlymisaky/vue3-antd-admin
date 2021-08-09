@@ -33,20 +33,3 @@ export class Validator {
     return new RegExp(`^(-|\\+)?\\d+(\\.\\d{0,${floatLength}})?$`).test(val);
   }
 }
-
-/**
- * 用于修复 a-select 使用 required 校验无法通过的bug
- * @param message
- */
-export function validatorSelect(message: string): FormRuleItem {
-  return {
-    required: true,
-    trigger: 'blur',
-    validator(rule, value) {
-      if (Validator.isEmpty(value)) {
-        return Promise.reject(message);
-      }
-      return Promise.resolve();
-    },
-  };
-}

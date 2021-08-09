@@ -1,5 +1,5 @@
 <template>
-  <Selects v-model:value="vModel"
+  <Selects v-model:value="val"
     v-bind="attrs"
     :options="types"
     :optionsProps="{ key: getKey, label: getLabel, }" />
@@ -10,10 +10,8 @@
  * @author zhushiqi
  */
 
-import {
-  computed, defineComponent, PropType,
-} from 'vue';
-import { useProp2VModel } from '@/hooks/base/useVModel';
+import { computed, defineComponent, PropType } from 'vue';
+import { useVModel } from '@/hooks/base/useVModel';
 import { getEnumVal } from '@/utils/index';
 import Selects from '@/components/base/Selects.vue';
 
@@ -38,17 +36,17 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
-    const { vModel } = useProp2VModel(props, 'value', ctx);
+    const val = useVModel(props, 'value');
     const attrs = computed(() => ({
       placeholder: '请选择',
       ...ctx.attrs,
     }));
 
     // 自己实现
-    const types = computed<XingrenEmun[]>(() => ([
+    const types = computed<XingrenEmun[]>(() => [
       ['SSS', '启用', 0],
       ['AAA', '禁用', 2],
-    ]));
+    ]);
 
     function getKey(item: XingrenEmun) {
       return getEnumVal(item, props.enumKey);
@@ -59,7 +57,7 @@ export default defineComponent({
     }
 
     return {
-      vModel,
+      val,
       types,
       attrs,
       getKey,

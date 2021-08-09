@@ -1,5 +1,5 @@
 <template>
-  <a-modal v-model:visible="visibleModel"
+  <a-modal v-model:visible="display"
     :title="title"
     okText="保存"
     :width="500"
@@ -30,10 +30,10 @@
 import {
   computed, defineComponent, PropType, ref, Ref, watch,
 } from 'vue';
-import { useProp2VModel } from '@/hooks/base/useVModel';
+import { useRouter } from 'vue-router';
+import { useVModel } from '@/hooks/base/useVModel';
 import { useRequest } from '@/hooks/base/useRequest';
 import { Article, ArticleUpsert } from '@/models/Article.model';
-import { useRouter } from 'vue-router';
 import { ArticleApi } from '@/api/Article.api';
 
 export default defineComponent({
@@ -47,8 +47,8 @@ export default defineComponent({
       type: Object as PropType<Article>,
     },
   },
-  setup(props, ctx) {
-    const { vModel: visibleModel } = useProp2VModel(props, 'visible', ctx);
+  setup(props) {
+    const display = useVModel(props, 'visible');
     const title = computed(() => {
       if (props.article) {
         return '编辑文章';
@@ -91,7 +91,7 @@ export default defineComponent({
         .validate()
         .then(() => requestFn(form.value))
         .then(() => {
-          visibleModel.value = false;
+          display.value = false;
           router.push({
             name: 'Article.Detail',
             params: {
@@ -106,9 +106,9 @@ export default defineComponent({
     }
 
     watch(
-      () => visibleModel.value,
+      display,
       () => {
-        if (visibleModel.value) {
+        if (display.value) {
           form.value = {
             title: '',
             content: '',
@@ -128,7 +128,7 @@ export default defineComponent({
     );
 
     return {
-      visibleModel,
+      display,
       title,
       formRef,
       form,

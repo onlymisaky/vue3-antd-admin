@@ -1,15 +1,13 @@
 <template>
-  <a-select style="min-width:80px"
-    v-model:value="vModel"
+  <a-select style="min-width: 80px;"
+    v-model:value="val"
     v-bind="attrs"
     v-on="attrs">
     <a-select-option v-for="item in options"
       :key="getKey(item)"
       :label="getLabel(item)"
       :title="getLabel(item)"
-      :disabled="isDisabled(item)">
-      {{getLabel(item)}}
-    </a-select-option>
+      :disabled="isDisabled(item)">{{ getLabel(item) }}</a-select-option>
   </a-select>
 </template>
 
@@ -21,10 +19,10 @@
 import {
   computed, defineComponent, PropType, onBeforeMount,
 } from 'vue';
-import { useProp2VModel } from '@/hooks/base/useVModel';
+import { useVModel } from '@/hooks/base/useVModel';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type fn<T = string> = (item: any) => T;
+type Fn<T = string> = (item: any) => T;
 
 export default defineComponent({
   name: 'Selects',
@@ -39,15 +37,15 @@ export default defineComponent({
     },
     optionsProps: {
       type: Object as PropType<{
-        key: string | fn;
-        label: string | fn;
-        disabled: boolean | fn<boolean>;
+        key: string | Fn;
+        label: string | Fn;
+        disabled: boolean | Fn<boolean>;
       }>,
       required: true,
     },
   },
   setup(props, ctx) {
-    const { vModel } = useProp2VModel(props, 'value', ctx);
+    const val = useVModel(props, 'value');
 
     const getKey = computed(() => {
       if (typeof props.optionsProps.key === 'function') {
@@ -95,13 +93,13 @@ export default defineComponent({
 
     onBeforeMount(() => {
       // 修复下拉框板顶的值为 '' 不显示 placeholder
-      if (vModel.value === '') {
-        vModel.value = undefined;
+      if (val.value === '') {
+        val.value = undefined as unknown as string;
       }
     });
 
     return {
-      vModel,
+      val,
       attrs,
       getKey,
       getLabel,

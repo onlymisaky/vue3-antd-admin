@@ -1,20 +1,18 @@
 import {
-  computed, SetupContext,
+  getCurrentInstance, computed, ComponentInternalInstance,
 } from 'vue';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function useProp2VModel<VM, P extends {} = any>(
+export function useVModel<P extends {}, K extends keyof P, >(
   props: Readonly<P>,
-  key: keyof P,
-  ctx: SetupContext,
+  name: K,
 ) {
-  const vModel = computed<VM>({
+  const { emit } = getCurrentInstance() as ComponentInternalInstance;
+  return computed<P[K]>({
     get() {
-      return props[key] as unknown as VM;
+      return props[name];
     },
-    set(val) {
-      ctx.emit(`update:${key}`, val);
+    set(v) {
+      emit(`update:${name}`, v);
     },
   });
-  return { vModel };
 }

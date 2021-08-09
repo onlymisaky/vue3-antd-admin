@@ -150,9 +150,11 @@ export default defineComponent({
 .search-select {
   display: inline-block;
   position: relative;
+
   .input-area {
     display: block;
   }
+
   .result-area {
     position: absolute;
     z-index: 10;
@@ -160,11 +162,13 @@ export default defineComponent({
     width: 100%;
     background: #fff;
     text-align: center;
+
     & ::v-deep tr.high-light {
       &:hover > td {
         background-color: #409eff;
         color: #fff;
       }
+
       & > td {
         background-color: #409eff;
         color: #fff;

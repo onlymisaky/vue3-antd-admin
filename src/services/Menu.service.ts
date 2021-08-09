@@ -6,9 +6,9 @@
 import {
   computed, ComputedRef, Ref, ref,
 } from 'vue';
-import { Singleton } from '@/utils/singleton';
 import { useRoute } from 'vue-router';
 import { cloneDeep } from 'lodash';
+import { Singleton } from '@/utils/singleton';
 import { routeService } from './Route.service';
 
 @Singleton
@@ -77,9 +77,9 @@ export class MenuService {
       } = item;
       if (!hiddenMenu || hiddenMenu) {
         if (abstract || name === route.name) {
-          breadcrumb.push({ title });
+          breadcrumb.push({ title: title as string });
         } else {
-          breadcrumb.push({ title, route: item });
+          breadcrumb.push({ title: title as string, route: item });
         }
       }
     }

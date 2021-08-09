@@ -24,7 +24,7 @@ router.beforeEach((to, from, next) => {
     });
   }
   if (title) {
-    document.title = title;
+    document.title = title as string;
   }
 });
 
