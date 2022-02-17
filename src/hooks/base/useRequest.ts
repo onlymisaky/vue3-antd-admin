@@ -3,10 +3,10 @@
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { message } from 'ant-design-vue';
 import { ref, Ref } from 'vue';
+import { message } from 'ant-design-vue';
 
-interface Opt<T> {
+interface Config<T> {
   initData?: T;
   msg?: string;
   errMsg?: boolean | string;
@@ -14,13 +14,13 @@ interface Opt<T> {
 }
 
 export function useRequest<Requests extends Array<any>, Resp>(
-  apiFn: (...args: Requests) => HttpResponseP<Resp>,
-  opt?: Opt<Resp>,
+  fetcher: (...args: Requests) => HttpResponseP<Resp>,
+  config?: Config<Resp>,
 ) {
   const options = {
     errMsg: true,
     cache: false,
-    ...opt,
+    ...config,
   };
   const loading = ref(false);
   const data = ref(options.initData as Resp) as Ref<Resp>;
@@ -28,7 +28,7 @@ export function useRequest<Requests extends Array<any>, Resp>(
 
   function fetchData(...args: Requests): Promise<XingrenResponse<Resp>> {
     loading.value = true;
-    return apiFn(...args)
+    return fetcher(...args)
       .then((response) => {
         data.value = response.data.data;
         if (typeof options.msg === 'string') {
