@@ -2,20 +2,23 @@
  * @author zhushiqi
  */
 
-/* eslint-disable no-param-reassign */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-interface SingletonConstructor<T> {
-  new(...args: Array<any>): T;
-  instance: T;
-  getInstance(...args: Array<any>): T;
+interface Constructor<T> {
+  new(...args: any[]): T;
 }
 
-export function Singleton<T>(Target: SingletonConstructor<T>) {
-  Target.getInstance = (...args) => {
-    if (!Target.instance) {
-      Target.instance = new Target(...args);
+export function singleton<T>(Target: Constructor<T>) {
+  // @ts-ignore
+  return class Singleton extends Target {
+    static instance: T;
+
+    static getInstance(...args: any[]): T {
+      if (!Singleton.instance) {
+        Singleton.instance = new Target(...args);
+      }
+      return Singleton.instance;
     }
-    return Target.instance;
   };
 }

@@ -6,16 +6,11 @@
 import {
   computed, Ref, ref,
 } from 'vue';
-import { Singleton } from '@/utils/singleton';
+import { singleton } from '@/utils/singleton';
 import { UserApi } from '@/api/User.api';
 import { User } from '@/models/User.model';
 
-@Singleton
 export class UserService {
-  static instance: UserService;
-
-  static getInstance: () => UserService;
-
   userInfo = ref() as Ref<User>;
 
   permissions = computed<string[]>(() => {
@@ -23,9 +18,9 @@ export class UserService {
       return this.userInfo.value.permissions;
     }
     return [];
-  }) ;
+  });
 
-  getUserInfo(): Promise < { name: string; permissions: string[] } > {
+  getUserInfo(): Promise<{ name: string; permissions: string[] }> {
     if (this.userInfo.value) {
       return Promise.resolve(this.userInfo.value);
     }
@@ -40,4 +35,4 @@ export class UserService {
   }
 }
 
-export const userService = UserService.getInstance();
+export const userService = singleton(UserService).getInstance();

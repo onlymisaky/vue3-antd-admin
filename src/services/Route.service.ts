@@ -9,14 +9,13 @@ import {
 import { GeedStorage } from 'geed-storage';
 import { RouteLocationNormalized, Router } from 'vue-router';
 import { cloneDeep } from 'lodash';
-import { Singleton } from '@/utils/singleton';
+import { singleton } from '@/utils/singleton';
 import { privateRoutes, commonRoutes } from '@/router/routes';
 import { userService } from './User.service';
 import { permissionService } from './Permission.service';
 
 const storage = new GeedStorage({ type: 'session' });
 
-@Singleton
 export class RouteService {
   static instance: RouteService;
 
@@ -33,7 +32,7 @@ export class RouteService {
   routeNames = computed(() => [
     ...this.tileRoutes.value.map((item) => item.name),
     ...this.whiteRouteNames,
-  ])
+  ]);
 
   /** 标示，用于判断是否生成路由成功 */
   genRoutesSuccess = false;
@@ -178,4 +177,4 @@ export class RouteService {
   }
 }
 
-export const routeService = RouteService.getInstance();
+export const routeService = singleton(RouteService).getInstance();

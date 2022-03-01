@@ -6,18 +6,13 @@
  */
 
 import { computed } from 'vue';
-import { Singleton } from '@/utils/singleton';
+import { singleton } from '@/utils/singleton';
 import { userService } from './User.service';
 
-@Singleton
 export class PermissionService {
-  static instance: PermissionService;
-
-  static getInstance: () => PermissionService;
-
   articleEdit = computed(() => this.hasPermission(['article:edit']));
 
-  articleAdd= computed(() => this.hasPermission(['article:add']));
+  articleAdd = computed(() => this.hasPermission(['article:add']));
 
   hasPermission(permissions: string[]) {
     if (!permissions || permissions.length === 0) return true;
@@ -28,4 +23,4 @@ export class PermissionService {
   }
 }
 
-export const permissionService = PermissionService.getInstance();
+export const permissionService = singleton(PermissionService).getInstance();

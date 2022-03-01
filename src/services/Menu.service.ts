@@ -8,15 +8,10 @@ import {
 } from 'vue';
 import { useRoute } from 'vue-router';
 import { cloneDeep } from 'lodash';
-import { Singleton } from '@/utils/singleton';
+import { singleton } from '@/utils/singleton';
 import { routeService } from './Route.service';
 
-@Singleton
 export class MenuService {
-  static instance: MenuService;
-
-  static getInstance: () => MenuService;
-
   /** 左侧菜单栏，根据路由生成 */
   menus: ComputedRef<Menu[]> = computed(() => this.genMenus(routeService.routes.value));
 
@@ -91,4 +86,4 @@ export class MenuService {
   }
 }
 
-export const menuService = MenuService.getInstance();
+export const menuService = singleton(MenuService).getInstance();

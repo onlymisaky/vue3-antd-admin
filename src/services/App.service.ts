@@ -4,14 +4,9 @@
  */
 
 import { ref } from 'vue';
-import { Singleton } from '@/utils/singleton';
+import { singleton } from '@/utils/singleton';
 
-@Singleton
 export class AppService {
-  static instance: AppService;
-
-  static getInstance: () => AppService;
-
   loading = ref(false);
 
   viewKey = ref(0);
@@ -21,4 +16,4 @@ export class AppService {
   }
 }
 
-export const appService = AppService.getInstance();
+export const appService = singleton(AppService).getInstance();
