@@ -1,11 +1,9 @@
 import Layout from '@/layouts/Layout.vue';
 import { commonRoutes } from './common-routes';
 import { articleRoute } from './article.route';
-import { logRoute } from './log.route';
 
 const privateRoutes = [
   articleRoute,
-  logRoute,
 ];
 
 privateRoutes.forEach((route) => {

@@ -31,7 +31,9 @@ export class UserService {
   }
 
   logout() {
-    window.location.href = '/logout';
+    UserApi.logout().then(() => {
+      window.location.href = '/#/login';
+    });
   }
 }
 

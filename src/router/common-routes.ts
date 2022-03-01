@@ -13,6 +13,14 @@ const commonRoutes: Array<RouteConfig> = [
     },
   },
   {
+    name: 'Login',
+    path: '/login',
+    component: () => import('@/views/Login.vue'),
+    meta: {
+      title: '登陆',
+    },
+  },
+  {
     name: 'Result',
     path: '/result/:status',
     component: Result,

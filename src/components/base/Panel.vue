@@ -19,11 +19,13 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue';
+
 /**
  * @author zhushiqi
  */
-export default {
+export default defineComponent({
   name: 'Panel',
   props: {
     title: {
@@ -31,7 +33,7 @@ export default {
       default: '',
     },
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

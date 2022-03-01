@@ -10,6 +10,7 @@
 
 import { defineComponent, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+// eslint-disable-next-line import/no-cycle
 import { routeService } from '@/services/Route.service';
 
 export default defineComponent({

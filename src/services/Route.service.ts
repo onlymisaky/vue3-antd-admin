@@ -17,10 +17,6 @@ import { permissionService } from './Permission.service';
 const storage = new GeedStorage({ type: 'session' });
 
 export class RouteService {
-  static instance: RouteService;
-
-  static getInstance: () => RouteService;
-
   whiteRouteNames = this.flatRoutes(commonRoutes).map((item) => item.name);
 
   /** 权限路由表 */

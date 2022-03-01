@@ -13,6 +13,7 @@ const eslintConfig = {
     ecmaVersion: 2020,
   },
   rules: {
+    'linebreak-style': 'off',
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'import/prefer-default-export': 'off',
@@ -21,6 +22,7 @@ const eslintConfig = {
     'no-unused-expressions': ['error', { allowShortCircuit: true, allowTernary: true }],
     'no-restricted-syntax': 'off',
     'prefer-promise-reject-errors': 'off',
+    'vue/multi-word-component-names': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/ban-types': [
       'error', {
@@ -30,6 +32,7 @@ const eslintConfig = {
         },
       },
     ],
+    'vuejs-accessibility/click-events-have-key-events': 'off',
   },
   overrides: [
     {

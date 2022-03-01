@@ -1,4 +1,4 @@
-/** @type {import('stylelint').Configuration} */
+/** @type {import('stylelint').Config} */
 const styleLintConfig = {
   processors: [],
   extends: 'stylelint-config-standard',
