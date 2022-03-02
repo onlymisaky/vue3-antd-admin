@@ -13,9 +13,9 @@ interface Config<T> {
   cache?: boolean;
 }
 
-export function useRequest<Requests extends Array<any>, Resps>(
-  fetcher: (...args: Requests) => HttpResponseP<Resps>,
-  config?: Config<Resps>,
+export function useRequest<Requests extends Array<any>, Resp>(
+  fetcher: (...args: Requests) => HttpResponseP<Resp>,
+  config?: Config<Resp>,
 ) {
   const options = {
     errMsg: true,
@@ -23,10 +23,10 @@ export function useRequest<Requests extends Array<any>, Resps>(
     ...config,
   };
   const loading = ref(false);
-  const data = ref(options.initData as Resps) as Ref<Resps>;
+  const data = ref(options.initData as Resp) as Ref<Resp>;
   const error = ref(null) as Ref<any>;
 
-  function fetchData(...args: Requests): Promise<Resp<Resps>> {
+  function fetchData(...args: Requests): Promise<ApiResponse<Resp>> {
     loading.value = true;
     return fetcher(...args)
       .then((response) => {
@@ -52,9 +52,9 @@ export function useRequest<Requests extends Array<any>, Resps>(
 
   let firstFetch = true;
   let prevRequsets: Requests = [] as unknown as Requests;
-  let prevResponse: Resp<Resps>;
+  let prevResponse: ApiResponse<Resp>;
 
-  function getCache(...args: Requests): Promise<Resp<Resps>> {
+  function getCache(...args: Requests): Promise<ApiResponse<Resp>> {
     const cacheEnable = options.cache
       && !firstFetch
       && JSON.stringify(prevRequsets) === JSON.stringify(args)
@@ -79,7 +79,7 @@ export function useRequest<Requests extends Array<any>, Resps>(
   }
 
   // TODO 是返回原始的 Response 还是返回 Response.data 好？
-  function requestFn(...args: Requests): Promise<Resp<Resps>> {
+  function requestFn(...args: Requests): Promise<ApiResponse<Resp>> {
     return getCache(...args);
   }
 

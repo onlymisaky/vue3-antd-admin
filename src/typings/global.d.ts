@@ -3,6 +3,12 @@ import { RouteRecordRaw, RouteLocationRaw } from 'vue-router';
 import { RuleItem } from 'async-validator';
 
 declare global {
+
+  interface Window {
+    __POWERED_BY_QIANKUN__: string;
+    __INJECTED_PUBLIC_PATH_BY_QIANKUN__: string;
+  }
+
   interface PromiseConstructor {
     allSettled<TAll>(values: Iterable<TAll | PromiseLike<TAll>>): Promise<{ status: 'fulfilled' | 'rejected'; value?: TAll; reason: any }[]>;
   }
@@ -22,7 +28,7 @@ declare global {
     hasNext?: boolean;
   }
 
-  type Resp<T = any> = {
+  type ApiResponse<T = any> = {
     success: boolean;
     data: T;
     errCode: number;
@@ -30,13 +36,15 @@ declare global {
     message?: string;
   }
 
+  type ApiResponseP<T = any> = Promise<ApiResponse<T>>;
+
   type HttpError = {
     errCode: number;
     errMessage: string;
     [key: string]: any;
   }
 
-  type HttpResponse<T = any> = AxiosResponse<Resp<T>>;
+  type HttpResponse<T = any> = AxiosResponse<ApiResponse<T>>;
 
   type HttpResponseP<T = any> = Promise<HttpResponse<T>>;
 

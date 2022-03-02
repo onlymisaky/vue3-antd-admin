@@ -9,7 +9,7 @@ import { useRequest } from '@/hooks/base/useRequest';
 import { Validator } from '@/utils/validator';
 import { hasOwn } from '@/utils/index';
 
-type Resp<T> = Resp<T[] | TableResponse<T>>;
+type Resp<T> = ApiResponse<T[] | TableResponse<T>>;
 
 type BuildParams<P extends Array<any>> = (page: number, size: number) => P;
 type ProcessResp<T> = (response: Resp<T>) => Resp<T>;
@@ -83,7 +83,7 @@ export function useTable<P extends Array<any>, T>(
       return defaultFn(response);
     }
     if (paging) {
-      const resp = response as Resp<TableResponse<T>>;
+      const resp = response as ApiResponse<TableResponse<T>>;
       if (hasOwn(resp.data, 'total')) {
         pagination.total = resp.data.total as number;
       } else if (resp.data.hasNext as boolean) {

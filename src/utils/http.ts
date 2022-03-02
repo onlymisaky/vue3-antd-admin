@@ -1,5 +1,5 @@
 /* eslint-disable prefer-promise-reject-errors */
-import Axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import Axios, { AxiosRequestConfig } from 'axios';
 import { message as Message } from 'ant-design-vue';
 import { download } from './index';
 
@@ -23,7 +23,7 @@ function requestErrorInterceptor(error: any) {
   return Promise.reject(error);
 }
 
-async function responseInterceptor(response: AxiosResponse<Resp<object>>) {
+async function responseInterceptor(response: HttpResponse<object>) {
   // eslint-disable-next-line prefer-const
   let { data, headers } = response;
   if (data instanceof Blob) {
