@@ -13,9 +13,9 @@ interface Config<T> {
   cache?: boolean;
 }
 
-export function useRequest<Requests extends Array<any>, Resp>(
-  fetcher: (...args: Requests) => HttpResponseP<Resp>,
-  config?: Config<Resp>,
+export function useRequest<Requests extends Array<any>, Resps>(
+  fetcher: (...args: Requests) => HttpResponseP<Resps>,
+  config?: Config<Resps>,
 ) {
   const options = {
     errMsg: true,
@@ -23,10 +23,10 @@ export function useRequest<Requests extends Array<any>, Resp>(
     ...config,
   };
   const loading = ref(false);
-  const data = ref(options.initData as Resp) as Ref<Resp>;
+  const data = ref(options.initData as Resps) as Ref<Resps>;
   const error = ref(null) as Ref<any>;
 
-  function fetchData(...args: Requests): Promise<XingrenResponse<Resp>> {
+  function fetchData(...args: Requests): Promise<Resp<Resps>> {
     loading.value = true;
     return fetcher(...args)
       .then((response) => {
@@ -52,9 +52,9 @@ export function useRequest<Requests extends Array<any>, Resp>(
 
   let firstFetch = true;
   let prevRequsets: Requests = [] as unknown as Requests;
-  let prevResponse: XingrenResponse<Resp>;
+  let prevResponse: Resp<Resps>;
 
-  function getCache(...args: Requests): Promise<XingrenResponse<Resp>> {
+  function getCache(...args: Requests): Promise<Resp<Resps>> {
     const cacheEnable = options.cache
       && !firstFetch
       && JSON.stringify(prevRequsets) === JSON.stringify(args)
@@ -79,7 +79,7 @@ export function useRequest<Requests extends Array<any>, Resp>(
   }
 
   // TODO 是返回原始的 Response 还是返回 Response.data 好？
-  function requestFn(...args: Requests): Promise<XingrenResponse<Resp>> {
+  function requestFn(...args: Requests): Promise<Resp<Resps>> {
     return getCache(...args);
   }
 

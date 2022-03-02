@@ -10,7 +10,7 @@ export interface Article {
   created: number;
   updated: number;
   author: string;
-  status: XingrenEmun;
+  status: ArrayEnum;
 }
 
 export interface ArticleQuery {

@@ -43,16 +43,16 @@ export default defineComponent({
     }));
 
     // 自己实现
-    const types = computed<XingrenEmun[]>(() => [
+    const types = computed<ArrayEnum[]>(() => [
       ['SSS', '启用', 0],
       ['AAA', '禁用', 2],
     ]);
 
-    function getKey(item: XingrenEmun) {
+    function getKey(item: ArrayEnum) {
       return getEnumVal(item, props.enumKey);
     }
 
-    function getLabel(item: XingrenEmun) {
+    function getLabel(item: ArrayEnum) {
       return getEnumVal(item, 'name');
     }
 

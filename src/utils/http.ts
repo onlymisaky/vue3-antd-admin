@@ -23,7 +23,7 @@ function requestErrorInterceptor(error: any) {
   return Promise.reject(error);
 }
 
-async function responseInterceptor(response: AxiosResponse<XingrenResponse<object>>) {
+async function responseInterceptor(response: AxiosResponse<Resp<object>>) {
   // eslint-disable-next-line prefer-const
   let { data, headers } = response;
   if (data instanceof Blob) {

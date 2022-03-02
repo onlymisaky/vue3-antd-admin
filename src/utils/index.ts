@@ -1,5 +1,5 @@
 export function getEnumVal(
-  array: XingrenEmun,
+  array: ArrayEnum,
   index: 0 | 1 | 2 | 'enName' | 'name' | 'value',
 ): string | number {
   if (!Array.isArray(array)) {

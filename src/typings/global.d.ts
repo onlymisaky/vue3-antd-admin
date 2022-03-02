@@ -12,7 +12,7 @@ declare global {
     [key: number]: T;
   }
 
-  type XingrenEmun = [string, string, number];
+  type ArrayEnum = [string, string, number];
 
   type TableResponse<T = any> = {
     page: number;
@@ -22,7 +22,7 @@ declare global {
     hasNext?: boolean;
   }
 
-  type XingrenResponse<T = any> = {
+  type Resp<T = any> = {
     success: boolean;
     data: T;
     errCode: number;
@@ -36,7 +36,7 @@ declare global {
     [key: string]: any;
   }
 
-  type HttpResponse<T = any> = AxiosResponse<XingrenResponse<T>>;
+  type HttpResponse<T = any> = AxiosResponse<Resp<T>>;
 
   type HttpResponseP<T = any> = Promise<HttpResponse<T>>;
 
