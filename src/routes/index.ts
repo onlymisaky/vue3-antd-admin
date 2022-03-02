@@ -1,5 +1,5 @@
 import Layout from '@/layouts/Layout.vue';
-import { commonRoutes } from './common-routes';
+import { commonRoutes } from './common.route';
 import { articleRoute } from './article.route';
 
 const privateRoutes = [

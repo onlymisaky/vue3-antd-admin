@@ -10,7 +10,7 @@ import { GeedStorage } from 'geed-storage';
 import { RouteLocationNormalized, Router } from 'vue-router';
 import { cloneDeep } from 'lodash';
 import { singleton } from '@/utils/singleton';
-import { privateRoutes, commonRoutes } from '@/router/routes';
+import { privateRoutes, commonRoutes } from '@/routes';
 import { userService } from './User.service';
 import { permissionService } from './Permission.service';
 

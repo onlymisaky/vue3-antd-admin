@@ -26,7 +26,7 @@ export function useRequest<Requests extends Array<any>, Resp>(
   const data = ref(options.initData as Resp) as Ref<Resp>;
   const error = ref(null) as Ref<any>;
 
-  function fetchData(...args: Requests): Promise<ApiResponse<Resp>> {
+  function fetchData(...args: Requests): ApiResponseP<Resp> {
     loading.value = true;
     return fetcher(...args)
       .then((response) => {
@@ -54,7 +54,7 @@ export function useRequest<Requests extends Array<any>, Resp>(
   let prevRequsets: Requests = [] as unknown as Requests;
   let prevResponse: ApiResponse<Resp>;
 
-  function getCache(...args: Requests): Promise<ApiResponse<Resp>> {
+  function getCache(...args: Requests): ApiResponseP<Resp> {
     const cacheEnable = options.cache
       && !firstFetch
       && JSON.stringify(prevRequsets) === JSON.stringify(args)
@@ -79,7 +79,7 @@ export function useRequest<Requests extends Array<any>, Resp>(
   }
 
   // TODO 是返回原始的 Response 还是返回 Response.data 好？
-  function requestFn(...args: Requests): Promise<ApiResponse<Resp>> {
+  function requestFn(...args: Requests): ApiResponseP<Resp> {
     return getCache(...args);
   }
 
