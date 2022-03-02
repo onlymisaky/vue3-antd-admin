@@ -2,11 +2,18 @@ const { defineConfig } = require('@vue/cli-service');
 const StylelintWebpackPlugin = require('stylelint-webpack-plugin');
 
 const localmode = !!process.env.npm_config_localmode;
-const target = localmode ? 'http://localhost:8080/' : 'http://localhost:3000/';
+const microapp = !!process.env.npm_config_microapp;
+
+const port = '8090';
+const target = localmode ? `http://localhost:${port}/` : 'http://localhost:3000/';
 
 module.exports = defineConfig({
   transpileDependencies: true,
   devServer: {
+    port,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+    },
     setupMiddlewares: (middlewares, devServer) => {
       if (!devServer) {
         throw new Error('webpack-dev-server is not defined');
@@ -55,6 +62,12 @@ module.exports = defineConfig({
     },
   },
   chainWebpack(config) {
+    if (microapp) {
+      // config.entry('main').clear().add('./src/micro-app.ts');
+      config.output
+        .library('vueApp')
+        .libraryTarget('umd');
+    }
     // Unknown word  CssSyntaxError
     // config
     //   .plugin('stylelint-webpack-plugin')

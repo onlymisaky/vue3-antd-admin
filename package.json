@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "local": "npm run serve --localmode=true",
+    "local:micro-app": "npm run local --microapp",
+    "serve:micro-app": "npm run serve --microapp",
+    "build:micro-app": "npm run build --microapp",
+    "local": "npm run serve --localmode",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
