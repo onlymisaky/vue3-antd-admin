@@ -9,6 +9,9 @@
     "local": "npm run serve --localmode",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "local:vite": "npm run serve:vite --localmode",
+    "serve:vite": "vite",
+    "build:vite": "vite build",
     "lint": "vue-cli-service lint",
     "lint-css": "stylelint **/*.{html,vue,css,sass,scss} --fix --cache"
   },
@@ -28,6 +31,7 @@
     "@types/lodash": "^4.14.179",
     "@typescript-eslint/eslint-plugin": "^5.13.0",
     "@typescript-eslint/parser": "^5.13.0",
+    "@vitejs/plugin-vue": "^2.2.4",
     "@vue/cli-plugin-babel": "~5.0.1",
     "@vue/cli-plugin-eslint": "~5.0.1",
     "@vue/cli-plugin-router": "~5.0.1",
@@ -46,6 +50,10 @@
     "stylelint-order": "^5.0.0",
     "stylelint-scss": "^4.1.0",
     "stylelint-webpack-plugin": "^3.1.1",
-    "typescript": "~4.6.2"
+    "typescript": "~4.6.2",
+    "vite": "^2.8.6",
+    "vite-plugin-define-env": "^1.0.1",
+    "vite-plugin-html-template": "^1.1.2",
+    "vue-tsc": "^0.32.1"
   }
 }

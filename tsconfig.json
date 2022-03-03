@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "useDefineForClassFields": true,
     "resolveJsonModule": true,
     "experimentalDecorators": true,
     "target": "esnext",
@@ -38,4 +39,9 @@
   "exclude": [
     "node_modules"
   ],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
 }

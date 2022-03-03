@@ -4,8 +4,7 @@ import { message as Message } from 'ant-design-vue';
 import { download } from './index';
 
 const http = Axios.create({
-  baseURL: process.env.VUE_APP_MOCK
-    ? process.env.VUE_APP_MOCK_BASE_API : process.env.VUE_APP_BASE_API,
+  baseURL: process.env.VUE_APP_BASE_API,
   timeout: 15000,
   withCredentials: true,
   validateStatus(status) {

@@ -34,6 +34,7 @@ export async function unmount() {
   // eslint-disable-next-line prefer-rest-params
   console.log(arguments);
   appInstance?.unmount();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   router = null;
   console.log(componentPublicInstance);
 }
